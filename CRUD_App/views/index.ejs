@@ -9,11 +9,14 @@
 </head>
 <body>
     <div class="h-full w-full bg-zinc-900 p-10 text-white ">
+        <div class="nav mb-10">
+        <a  class="text-lg text-blue-500 mb-10 hover:text-xl" href="/read">Read Users</a>
+        </div>
         <h1 class="text-3xl tracking-tighter mb-5">Create User</h1>
-        <form action="">
-            <input class="px-5 py-3 border-5 border-zinc-800 outline-none" type="text" placeholder="name">
-            <input class="px-5 py-3 border-5 border-zinc-800 outline-none" type="text" placeholder="email">
-            <input class="px-5 py-3 border-5 border-zinc-800 outline-none" type="text" placeholder="image url">
+        <form action="/create" method="post">
+            <input class="px-5 py-3 border-5 border-zinc-800 outline-none" type="text" name = "name" placeholder="name">
+            <input class="px-5 py-3 border-5 border-zinc-800 outline-none" type="text" name = "email" placeholder="email">
+            <input class="px-5 py-3 border-5 border-zinc-800 outline-none" type="text" name = "image" placeholder="image url">
             <input class="px-5 py-3 text-center font-semibold text-xl rounded-lg cursor-pointer bg-blue-500 ml-5 active:scale-102 outline-none " type="submit" Value="Create User">
         </form>
     </div>
