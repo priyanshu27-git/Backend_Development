@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
 
+
 const app = express()
 
 app.set("view engine" , "ejs")
@@ -13,8 +14,6 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname , "public")))
 app.use(cookieParser())
-
-
 
 
 app.get("/" , (req , res) => {
@@ -39,6 +38,32 @@ app.post("/create" , (req , res) => {
         res.send(createdUser);
       });
     });
+})
+
+app.get("/login" , (req , res) =>{
+    res.render("login")
+})
+
+app.post("/login" , async (req , res) =>{
+    let user = await userModel.findOne({email : req.body.email})
+    if(!user) return res.send("Something Went wrong!!!")
+    
+    bcrypt.compare(req.body.password , user.password , (err , result) =>{
+      if(!result) {
+        res.send("Something went wrong")
+      }
+      else{
+        let token = jwt.sign({email : user.email} , "secretHaiBeYeh")
+        res.cookie("token" , token)
+        res.send("Yes You can login")
+      }
+    })
+
+})
+
+app.get("/logout" , (req , res) =>{
+    res.cookie("token" , "");
+    res.redirect("/")
 })
 
 
