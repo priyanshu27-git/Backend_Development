@@ -4,9 +4,13 @@ const jwt = require("jsonwebtoken")
 const {generateToken} = require("../utils/generateToken")
 
 
-module.exports.registerUser = (req , res) =>{
+
+module.exports.registerUser = async (req , res) =>{
     try{
      let {fullname , email , password} = req.body; 
+
+     const user = await userModel.findOne({email : email});
+     if(user) return res.status(401).send("You already have an account, Please Login")
 
      bcrypt.genSalt(12 , (err , salt) =>{
         bcrypt.hash(password , salt , async (err , hash) =>{
@@ -31,4 +35,27 @@ module.exports.registerUser = (req , res) =>{
         res.send(err.message);
     }
 
+}
+
+module.exports.loginUser = async (req , res) =>{
+    let {email , password} = req.body;
+
+    let user = await userModel.findOne({email : email})
+    if(!user) return res.send("Email or password is incorrect")
+
+        bcrypt.compare(password , user.password , function(err , result){
+            if(result){
+                let token = generateToken(user);
+                res.cookie("token" , token)
+                res.send("You can login")
+            }
+            else{
+                req.flash("error" , "Email or password is incorrect")
+                return res.redirect("/");
+            }
+        })
+}
+
+module.exports.logout = (req , res) =>{
+    
 }
