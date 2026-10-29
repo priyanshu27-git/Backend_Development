@@ -15,8 +15,9 @@ router.get("/shop", isLoggedIn , async (req , res) =>{
     res.render("shop" , {products});
 })
 
-// router.get("/logout", isLoggedIn , (req , res) =>{
-//     res.render("shop");
-// })
+router.get("/users/logout", isLoggedIn , (req , res) =>{
+    let error = req.flash("error")
+    res.render("index" , {error});
+})
 
 module.exports = router;
