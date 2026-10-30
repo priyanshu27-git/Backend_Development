@@ -10,13 +10,15 @@
 </head>
 
 <body class="font-['helvetica_now_display']">
-    <nav class="w-full flex justify-between px-5 py-3">
+    <nav class="w-full flex justify-between px-8 py-3">
         <h3 class="text-3xl">Scatch</h3>
-        <div class="flex gap-4">
-            <a href="">Shop</a>
-            <a href="">Cart</a>
+        <% var LoggedIn = typeof LoggedIn !== "undefined" ? LoggedIn : true %>
+        <% if(LoggedIn) { %>
+            <div class="flex gap-4 text-lg">
+            <a href="/shop">Shop</a>
+            <a href="/cart">Cart</a>
             <a href="">My Account</a>
-            <a class="text-red-600" href="/users/logout">Logout</a>
-
+            <a class="text-red-600" href="/logout">Logout</a>
         </div>
+        <% } %>
     </nav>

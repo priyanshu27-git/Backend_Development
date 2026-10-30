@@ -2,7 +2,8 @@ const userModel = require("../models/user-model")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const {generateToken} = require("../utils/generateToken")
-
+const isLoggedIn = require("../Middleware/isLoggedIn")
+const productModel = require("../models/product-model")
 
 
 module.exports.registerUser = async (req , res) =>{
@@ -24,7 +25,7 @@ module.exports.registerUser = async (req , res) =>{
 
             let token = generateToken(user);
             res.cookie("token" , token);
-            res.send("User Created Successfully");
+            res.redirect("/shop")
 
             }
         })
@@ -37,7 +38,8 @@ module.exports.registerUser = async (req , res) =>{
 
 }
 
-module.exports.loginUser = async (req , res) =>{
+module.exports.loginUser =  async (req , res) =>{
+    let products = await productModel.find();
     let {email , password} = req.body;
 
     let user = await userModel.findOne({email : email})
@@ -47,7 +49,7 @@ module.exports.loginUser = async (req , res) =>{
             if(result){
                 let token = generateToken(user);
                 res.cookie("token" , token)
-                res.send("You can login")
+                res.redirect("/shop")
             }
             else{
                 req.flash("error" , "Email or password is incorrect")
@@ -57,5 +59,5 @@ module.exports.loginUser = async (req , res) =>{
 }
 
 module.exports.logout = (req , res) =>{
-    
+    res.render("index")
 }
